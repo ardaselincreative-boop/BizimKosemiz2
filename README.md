@@ -23,3 +23,29 @@ GitHub'a göndermek için proje klasöründe şu komutları çalıştırmanız y
 git remote add origin https://github.com/<KULLANICI_ADINIZ>/BizimKosemiz.git
 git push -u origin main
 ```
+
+
+## 3. WebGL + mobil tarayıcı hedefi (geliştirme aşamasında)
+
+Hedef: oyunu HTTPS üzerinden yayımlayıp iOS Safari ve Android tarayıcısından açmak; iki oyuncunun Unity Relay üzerinden aynı oturuma katılması.
+
+### Ağ gereksinimleri
+- WebGL tarayıcıları doğrudan UDP soketi açamaz. Relay bağlantısı WebGL için **WSS (WebSocket Secure)** kullanmalıdır.
+- `RelayNetworkSession`, Relay transport ayarını WSS kullanacak şekilde yapılandırır. Bu kod tek başına sahne kurulumunu, oyuncu prefab atamasını veya karakter hareketi senkronizasyonunu tamamlamaz.
+- `GardenScene` içinde `NetworkManager` + `UnityTransport` bulunmalı; `Player Prefab` alanına `NetworkObject` içeren prefab atanmalıdır.
+- Unity Services projesi Unity Dashboard'da oluşturulup bu Unity projesine bağlanmalı ve Relay etkin olmalıdır.
+
+### WebGL derleme
+1. Unity Hub'da kurulu Unity sürümüne **WebGL Build Support** modülünü ekleyin.
+2. Unity'de **File > Build Settings** (veya sürüme göre **Build Profiles**) içinden WebGL hedefini seçin.
+3. Oyunu HTTPS destekleyen bir statik hosting sağlayıcısında yayımlayın. Dosyayı doğrudan `file://` yolundan açmayın.
+4. Gerçek iPhone Safari ve Android tarayıcısında test edin. Unity Editor'de başarılı çalışması mobil WebGL performansını veya ağ bağlantısını tek başına doğrulamaz.
+
+### Henüz tamamlanmayanlar
+- Yerel karakter prefablarının ve animasyonlarının projeye entegre edilmesi
+- NetworkObject spawn akışı ve oyuncu başına karakter seçimi
+- Hareket/kamera/animasyon senkronizasyonu
+- Dokunmatik joystick ve mobil arayüz
+- Gerçek WebGL build, hosting ve iki ayrı telefonla Relay testi
+
+Bu nedenle mevcut branch bir **altyapı geliştirme adımıdır**, tamamlanmış ve test edilmiş bir çevrimiçi oyun sürümü değildir.
