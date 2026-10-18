@@ -20,7 +20,7 @@ namespace BizimKosemiz.Networking
     public sealed class RelayNetworkSession : MonoBehaviour
     {
         [SerializeField, Min(1)] private int maxPlayers = 4;
-        [SerializeField] private string connectionType = "dtls";
+        [SerializeField] private string connectionType = "wss";
 
         public string JoinCode { get; private set; } = string.Empty;
         public bool IsBusy { get; private set; }
@@ -39,7 +39,7 @@ namespace BizimKosemiz.Networking
                 JoinCode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
 
                 UnityTransport transport = GetTransport();
-                transport.SetRelayServerData(AllocationUtils.ToRelayServerData(allocation, connectionType));
+                ConfigureWebSocketRelay(transport, allocation);
 
                 if (!NetworkManager.Singleton.StartHost())
                     throw new InvalidOperationException("NetworkManager Host başlatılamadı.");
@@ -70,7 +70,7 @@ namespace BizimKosemiz.Networking
                 JoinAllocation allocation = await RelayService.Instance.JoinAllocationAsync(joinCode.Trim().ToUpperInvariant());
 
                 UnityTransport transport = GetTransport();
-                transport.SetRelayServerData(AllocationUtils.ToRelayServerData(allocation, connectionType));
+                ConfigureWebSocketRelay(transport, allocation);
 
                 if (!NetworkManager.Singleton.StartClient())
                     throw new InvalidOperationException("NetworkManager Client başlatılamadı.");
@@ -100,6 +100,20 @@ namespace BizimKosemiz.Networking
 
             if (!AuthenticationService.Instance.IsSignedIn)
                 await AuthenticationService.Instance.SignInAnonymouslyAsync();
+        }
+
+        private void ConfigureWebSocketRelay(UnityTransport transport, Allocation allocation)
+        {
+            // Browser clients cannot open raw UDP sockets. WSS is required for WebGL.
+            transport.UseWebSockets = true;
+            transport.SetRelayServerData(AllocationUtils.ToRelayServerData(allocation, connectionType));
+        }
+
+        private void ConfigureWebSocketRelay(UnityTransport transport, JoinAllocation allocation)
+        {
+            // Keep both peers on the same browser-compatible Relay protocol.
+            transport.UseWebSockets = true;
+            transport.SetRelayServerData(AllocationUtils.ToRelayServerData(allocation, connectionType));
         }
 
         private UnityTransport GetTransport()
