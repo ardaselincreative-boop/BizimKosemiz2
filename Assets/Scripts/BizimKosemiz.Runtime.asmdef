@@ -1,0 +1,29 @@
+{
+    "name": "BizimKosemiz.Runtime",
+    "rootNamespace": "BizimKosemiz",
+    "references": [
+        "Unity.InputSystem",
+        "Unity.TextMeshPro",
+        "Unity.RenderPipelines.Universal.Runtime"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [
+        {
+            "name": "com.unity.netcode.gameobjects",
+            "expression": "1.0.0",
+            "define": "BIZIM_KOSEMIZ_NGO"
+        },
+        {
+            "name": "com.unity.services.relay",
+            "expression": "1.0.0",
+            "define": "BIZIM_KOSEMIZ_RELAY"
+        }
+    ],
+    "noEngineReferences": false
+}
