@@ -77,7 +77,7 @@ Animator:
   m_GameObject: {fileID: 200000}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 60305f39163b3c746a80e86eb914a600, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -103,6 +103,9 @@ MonoBehaviour:
   groundCheckPoint: {fileID: 200031}
   checkRadius: 0.24
   checkOffsetFromPivot: 0.08
+  groundLayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
 --- !u!114 &200005
 MonoBehaviour:
   m_ObjectHideFlags: 0
